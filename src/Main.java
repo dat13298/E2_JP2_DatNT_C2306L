@@ -23,10 +23,11 @@ public class Main {
 
         List<Room> rooms = new ArrayList<Room>();
         rooms.add(new Room("RS001", 8, RoomType.S));
-        rooms.add(new Room("RD001", 12, RoomType.T));
+        rooms.add(new Room("RD001", 12, RoomType.D));
         rooms.add(new Room("RQ002", 35, RoomType.QN));
         rooms.add(new Room("RT001", 12.5, RoomType.T));
         rooms.add(new Room("RQ001", 20.5, RoomType.QD));
+        rooms.add(new Room("RT002", 12.5, RoomType.T));
 
         List<Customer> customers = new ArrayList<Customer>();
         customers.add(new Customer("001", "Mr.Linus Tovaldo", "84125325346457"));
@@ -36,15 +37,17 @@ public class Main {
         List<Booking> bookings = new ArrayList<Booking>();
         bookings.add(new Booking(1, rooms.get(0), customers.get(0), LocalDateTime.of(2023, 3, 15, 9, 30, 15), LocalDateTime.of(2023, 3, 16, 12, 30, 45)));
         bookings.add(new Booking(2, rooms.get(0), customers.get(1), LocalDateTime.of(2023, 6, 9, 19, 30, 25), LocalDateTime.of(2023, 6, 10, 11, 25, 15)));
-        bookings.add(new Booking(3, rooms.get(1), customers.get(1), LocalDateTime.of(2023, 3, 11, 10, 10, 5), LocalDateTime.of(2023, 03, 13, 11, 5, 10)));
-        bookings.add(new Booking(4, rooms.get(3), customers.get(2), LocalDateTime.of(2023, 11, 11, 11, 11, 15), LocalDateTime.of(2023, 11, 13, 11, 15, 15)));
+        bookings.add(new Booking(3, rooms.get(1), customers.get(1), LocalDateTime.of(2023, 3, 11, 10, 10, 5), LocalDateTime.of(2023, 3, 13, 11, 5, 10)));
+        bookings.add(new Booking(4, rooms.get(3), customers.get(2), LocalDateTime.of(2025, 11, 11, 11, 11, 15), LocalDateTime.of(2025, 11, 13, 11, 15, 15)));
         bookings.add(new Booking(5, rooms.get(3), customers.get(0), LocalDateTime.of(2023, 10, 25, 9, 20, 25), LocalDateTime.of(2023, 10, 26, 12, 25, 30)));
         bookings.add(new Booking(6, rooms.get(2), customers.get(0), LocalDateTime.of(2023, 8, 18, 12, 25, 35), LocalDateTime.of(2023, 8, 19, 11, 35, 20)));
 
         RoomRepo roomRepo = new RoomRepo();
         RoomRepo.rooms = rooms;
+
         CustomerRepo customerRepo = new CustomerRepo();
         CustomerRepo.customers = customers;
+
         BookingRepo bookingRepo = new BookingRepo();
         BookingRepo.allBookings = bookings;
         BookingRepo.allCustomers = customers;

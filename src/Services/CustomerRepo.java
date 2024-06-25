@@ -4,7 +4,7 @@ import Entity.Customer;
 import Generic.IService;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 public class CustomerRepo implements IService<Customer> {
     public static List<Customer> customers;
@@ -26,10 +26,9 @@ public class CustomerRepo implements IService<Customer> {
     }
 
     @Override
-    public Customer findById(String id) {
+    public Optional<Customer> findById(String id) {
         return customers.stream()
                 .filter(c -> c.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+                .findFirst();
     }
 }

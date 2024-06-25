@@ -9,6 +9,7 @@ import Global.Format;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -43,7 +44,7 @@ public class BookingRepo implements IService<Booking> {
     }
 
     @Override
-    public Booking findById(String id) {
+    public Optional<Booking> findById(String id) {
         return null;
     }
 
@@ -51,6 +52,8 @@ public class BookingRepo implements IService<Booking> {
         int id = 0;
         boolean flag = false;
         String roomId = "", customerId = "", startDate = "", endDate = "", selected;
+        Room selectedRoom = null;
+        Customer selectedCustomer = null;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         do {
             try {
@@ -64,23 +67,43 @@ public class BookingRepo implements IService<Booking> {
                     selected = br.readLine();
                     switch (selected) {
                         case "1":
-                            System.out.println(findRoomByType("S"));
+                            List<Room> singleEmpty = getEmptyRoom(RoomType.S);
+                            if(singleEmpty.isEmpty()){
+                                System.out.println("There are no more rooms available during this time");
+                                break;
+                            } else singleEmpty.forEach(System.out::println);
                             flag = true;
                             break;
                         case "2":
-                            System.out.println(findRoomByType("D"));
+                            List<Room> doubleEmpty = getEmptyRoom(RoomType.D);
+                            if(doubleEmpty.isEmpty()){
+                                System.out.println("There are no more rooms available during this time");
+                                break;
+                            } else doubleEmpty.forEach(System.out::println);
                             flag = true;
                             break;
                         case "3":
-                            System.out.println(findRoomByType("QN"));
+                            List<Room> queenEmpty = getEmptyRoom(RoomType.QN);
+                            if(queenEmpty.isEmpty()){
+                                System.out.println("There are no more rooms available during this time");
+                                break;
+                            } else queenEmpty.forEach(System.out::println);
                             flag = true;
                             break;
                         case "4":
-                            System.out.println(findRoomByType("QD"));
+                            List<Room> quadEmpty = getEmptyRoom(RoomType.QD);
+                            if(quadEmpty.isEmpty()){
+                                System.out.println("There are no more rooms available during this time");
+                                break;
+                            } else quadEmpty.forEach(System.out::println);
                             flag = true;
                             break;
                         case "5":
-                            System.out.println(findRoomByType("T"));
+                            List<Room> tripleEmpty = getEmptyRoom(RoomType.T);
+                            if(tripleEmpty.isEmpty()){
+                                System.out.println("There are no more rooms available during this time");
+                                break;
+                            } else tripleEmpty.forEach(System.out::println);
                             flag = true;
                             break;
                         default:
@@ -90,10 +113,13 @@ public class BookingRepo implements IService<Booking> {
                 flag = false;
                 System.out.print("Enter Room ID: ");
                 roomId = br.readLine();
+
                 if (!checkRoomExists(roomId)) throw new Exception("Room does not exist");
+                selectedRoom = roomRepo.findById(roomId).get();
                 System.out.print("Enter Customer ID: ");
                 customerId = br.readLine();
                 if (!checkCustomerExists(customerId)) throw new Exception("Customer does not exist");
+                selectedCustomer = customerRepo.findById(customerId).get();
                 System.out.print("Enter Start Date(yyyy-MM-dd HH:mm): ");
                 startDate = br.readLine();
                 System.out.print("Enter End Date(yyyy-MM-dd HH:mm): ");
@@ -104,11 +130,25 @@ public class BookingRepo implements IService<Booking> {
             }
         } while (!flag);
         return new Booking(id
-                ,roomRepo.findById(roomId)
-                ,customerRepo.findById(customerId)
+                ,selectedRoom
+                ,selectedCustomer
                 ,Format.formatDate(startDate)
                 ,Format.formatDate(endDate));
 
+    }
+
+//    GET EMPTY ROOM
+
+    private List<Room> getEmptyRoom(RoomType type) {
+        List<Room> roomResults = findRoomByType(type);
+        Map<String, List<Booking>> bookingByRoomId = allBookings.stream()
+                .filter(s->s.getCheck_out_datetime().isAfter(LocalDateTime.now()))
+                .collect(Collectors.groupingBy(b->b.getRoom().getId()));
+        return roomResults.stream()
+                .filter(r-> {
+                    List<Booking> bookings = bookingByRoomId.get(r.getId());
+                    return bookings == null || bookings.isEmpty();
+                }).collect(Collectors.toList());
     }
 
 //    FIND BOOKING BY...

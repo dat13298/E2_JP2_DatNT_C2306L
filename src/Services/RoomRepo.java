@@ -5,7 +5,7 @@ import Entity.RoomType;
 import Generic.IService;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class RoomRepo implements IService<Room> {
@@ -28,16 +28,15 @@ public class RoomRepo implements IService<Room> {
     }
 
     @Override
-    public Room findById(String id) {
+    public Optional<Room> findById(String id) {
         return rooms.stream()
                 .filter(r -> r.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+                .findFirst();
     }
-    public static List<Room> findRoomByType(String type) {
-        Map<RoomType, List<Room>> map = rooms.stream()
-                .collect(Collectors.groupingBy(Room::getRoomType));
-        return map.get(RoomType.valueOf(type));
+    public static List<Room> findRoomByType(RoomType type) {
+        return rooms.stream()
+                .filter(r->r.getRoomType().equals(type))
+                .collect(Collectors.toList());
     }
 
 }
