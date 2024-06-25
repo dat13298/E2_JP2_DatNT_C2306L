@@ -141,12 +141,12 @@ public class BookingRepo implements IService<Booking> {
 
     private List<Room> getEmptyRoom(RoomType type) {
         List<Room> roomResults = findRoomByType(type);
-        Map<String, List<Booking>> bookingByRoomId = allBookings.stream()
-                .filter(s->s.getCheck_out_datetime().isAfter(LocalDateTime.now()))
-                .collect(Collectors.groupingBy(b->b.getRoom().getId()));
+        Map<Room, List<Booking>> bookingByRoomId = allBookings.stream()
+                .filter(bm->bm.getCheck_out_datetime().isAfter(LocalDateTime.now()))
+                .collect(Collectors.groupingBy(Booking::getRoom));
         return roomResults.stream()
                 .filter(r-> {
-                    List<Booking> bookings = bookingByRoomId.get(r.getId());
+                    List<Booking> bookings = bookingByRoomId.get(r);
                     return bookings == null || bookings.isEmpty();
                 }).collect(Collectors.toList());
     }
@@ -171,17 +171,17 @@ public class BookingRepo implements IService<Booking> {
 
 //    TOTAL REVENUE BY ROOM TYPE
 
-    public List<Map.Entry<String, DoubleSummaryStatistics>> getRoomWithTotalRevenue() {
+    public List<Map.Entry<RoomType, DoubleSummaryStatistics>> getRoomWithTotalRevenue() {
         return allBookings.stream()
-                .collect(Collectors.groupingBy(b->b.getRoom().getRoomType().getType()
+                .collect(Collectors.groupingBy(b->b.getRoom().getRoomType()
                         ,Collectors.summarizingDouble(Booking::getPrice)))
                 .entrySet().stream().toList();
     }
 
-//    DISPLAY ROOM HAS MAX TOTAL REVENUE BY YEAR
+//    DISPLAY TYPE ROOM HAS MAX TOTAL REVENUE BY YEAR
 
     public Optional<Map.Entry<String, DoubleSummaryStatistics>> getRoomHasLargestRevenue(int year) {
-        return allBookings.stream()
+                return allBookings.stream()
                 .filter(booking -> booking.getCheck_in_datetime().getYear() == year)
                 .collect(Collectors.groupingBy(b->b.getRoom().getRoomType().getType()
                         ,Collectors.summarizingDouble(Booking::getPrice)))
