@@ -54,9 +54,7 @@ public class BookingRepo implements IService<Booking> {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         do {
             try {
-                System.out.print("Enter Booking ID: ");
-                id = Integer.parseInt(br.readLine());
-                if (checkBookingExists(id)) throw new Exception("Booking already exists");
+                id = allBookings.size()+1;
                 do {
                     System.out.println("---Select room type");
                     for (int i = 0; i < RoomType.values().length; i++) {

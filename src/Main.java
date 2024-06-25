@@ -23,7 +23,7 @@ public class Main {
 
         List<Room> rooms = new ArrayList<Room>();
         rooms.add(new Room("RS001", 8, RoomType.S));
-        rooms.add(new Room("RD001", 12, RoomType.D));
+        rooms.add(new Room("RD001", 12, RoomType.T));
         rooms.add(new Room("RQ002", 35, RoomType.QN));
         rooms.add(new Room("RT001", 12.5, RoomType.T));
         rooms.add(new Room("RQ001", 20.5, RoomType.QD));
@@ -32,7 +32,7 @@ public class Main {
         customers.add(new Customer("001", "Mr.Linus Tovaldo", "84125325346457"));
         customers.add(new Customer("002", "Mr.Bill", "91124235346467"));
         customers.add(new Customer("003", "Mr.Turing", "911423534646"));
-//2024-07-17 12:00
+//2024-07-17 12:00/
         List<Booking> bookings = new ArrayList<Booking>();
         bookings.add(new Booking(1, rooms.get(0), customers.get(0), LocalDateTime.of(2023, 3, 15, 9, 30, 15), LocalDateTime.of(2023, 3, 16, 12, 30, 45)));
         bookings.add(new Booking(2, rooms.get(0), customers.get(1), LocalDateTime.of(2023, 6, 9, 19, 30, 25), LocalDateTime.of(2023, 6, 10, 11, 25, 15)));
