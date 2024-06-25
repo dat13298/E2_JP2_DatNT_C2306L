@@ -151,10 +151,6 @@ public class BookingRepo implements IService<Booking> {
 
 //    CHECK EXIST WHEN INPUT
 
-    public boolean checkBookingExists(int id) {
-        return allBookings.stream().anyMatch(b -> b.getId() == id);
-    }
-
     public boolean checkRoomExists(String roomId) {
         return allBookings.stream().anyMatch(b -> Objects.equals(b.getRoom().getId(), roomId));
     }
