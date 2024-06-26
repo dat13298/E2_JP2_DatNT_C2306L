@@ -142,7 +142,7 @@ public class BookingRepo implements IService<Booking> {
     private List<Room> getEmptyRoom(RoomType type) {
         List<Room> roomResults = findRoomByType(type);
         Map<Room, List<Booking>> bookingByRoomId = allBookings.stream()
-                .filter(bm->bm.getCheck_out_datetime().isAfter(LocalDateTime.now()))
+                .filter(bm->bm.getCheck_out_datetime().isBefore(LocalDateTime.now()))
                 .collect(Collectors.groupingBy(Booking::getRoom));
         return roomResults.stream()
                 .filter(bookingByRoomId::containsKey).collect(Collectors.toList());
