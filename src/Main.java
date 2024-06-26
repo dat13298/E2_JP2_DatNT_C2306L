@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Map;
 
 
 public class Main {
@@ -76,16 +76,19 @@ public class Main {
                         System.out.print("Enter customer name | phone number | room id: ");
                         stringToFind = br.readLine();
 
-                        if(!bookingRepo.findByCustomerName(stringToFind).isEmpty()) {
-                            System.out.println(bookingRepo.findByCustomerName(stringToFind));
+                        List<Map.Entry<Customer, List<Booking>>> resultByName = bookingRepo.findByCustomerName(stringToFind);
+                        if(!resultByName.isEmpty()) {
+                            System.out.println(resultByName);
                             break;
                         }
-                        if (!bookingRepo.findByRoomId(stringToFind).isEmpty()) {
-                            System.out.println(bookingRepo.findByRoomId(stringToFind));
+                        List<Map.Entry<Customer, List<Booking>>> resultByPhone = bookingRepo.findByCustomerPhone(stringToFind);
+                        if (!resultByPhone.isEmpty()) {
+                            System.out.println(resultByPhone);
                             break;
                         }
-                        if (!bookingRepo.findByCustomerPhone(stringToFind).isEmpty()) {
-                            System.out.println(bookingRepo.findByCustomerPhone(stringToFind));
+                        List<Map.Entry<Room, List<Booking>>> resultByRoom = bookingRepo.findByRoomId(stringToFind);
+                        if (!resultByRoom.isEmpty()) {
+                            System.out.println(resultByRoom);
                             break;
                         }
                         System.out.println("No reservations found");
