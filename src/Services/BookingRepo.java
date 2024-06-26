@@ -154,16 +154,28 @@ public class BookingRepo implements IService<Booking> {
 //    FIND BOOKING BY...
 
     public List<Map.Entry<Customer, List<Booking>>> findByCustomerName(String customerName) {
-
+        String[] keywords = customerName.split(" ");
         return allBookings.stream()
                 .collect(Collectors.groupingBy(Booking::getCustomer))
                 .entrySet().stream()
-                .filter(km->km.getKey().getCus_name().contains(customerName)).toList();
+                .filter(km-> {
+                    for (String keyword : keywords) {
+                        if(km.getKey().getCus_name().contains(customerName)) return true;
+                    }
+                    return false;
+
+                }).toList();
     }
     public List<Map.Entry<Customer, List<Booking>>> findByCustomerPhone(String phone) {
+        String[] keywords = phone.split(" ");
         return allBookings.stream()
                 .collect(Collectors.groupingBy(Booking::getCustomer))
-                .entrySet().stream().filter(mk-> mk.getKey().getCus_phone().contains(phone)).toList();
+                .entrySet().stream().filter(mk-> {
+                    for (String keyword : keywords) {
+                        if (mk.getKey().getCus_phone().contains(phone)) return true;
+                    }
+                    return false;
+                }).toList();
     }
     public List<Map.Entry<Room, List<Booking>>> findByRoomId(String roomId) {
         return allBookings.stream()
