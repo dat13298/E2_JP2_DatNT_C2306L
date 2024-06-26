@@ -153,25 +153,27 @@ public class BookingRepo implements IService<Booking> {
 
 //    FIND BOOKING BY...
 
-    public List<Map.Entry<String, List<Booking>>> findByCustomerName(String customerName) {
+    public List<Map.Entry<Customer, List<Booking>>> findByCustomerName(String customerName) {
+
         return allBookings.stream()
-                .collect(Collectors.groupingBy(b->b.getCustomer().getCus_name()))
-                .entrySet().stream().filter(mk-> mk.getKey().contains(customerName)).toList();
+                .collect(Collectors.groupingBy(Booking::getCustomer))
+                .entrySet().stream()
+                .filter(km->km.getKey().getCus_name().contains(customerName)).toList();
     }
-    public List<Map.Entry<String, List<Booking>>> findByCustomerPhone(String phone) {
+    public List<Map.Entry<Customer, List<Booking>>> findByCustomerPhone(String phone) {
         return allBookings.stream()
-                .collect(Collectors.groupingBy(b->b.getCustomer().getCus_phone()))
-                .entrySet().stream().filter(mk-> mk.getKey().contains(phone)).toList();
+                .collect(Collectors.groupingBy(Booking::getCustomer))
+                .entrySet().stream().filter(mk-> mk.getKey().getCus_phone().contains(phone)).toList();
     }
-    public List<Map.Entry<String, List<Booking>>> findByRoomId(String roomId) {
+    public List<Map.Entry<Room, List<Booking>>> findByRoomId(String roomId) {
         return allBookings.stream()
-                .collect(Collectors.groupingBy(b->b.getRoom().getId()))
-                .entrySet().stream().filter(mk-> mk.getKey().equals(roomId)).toList();
+                .collect(Collectors.groupingBy(Booking::getRoom))
+                .entrySet().stream().filter(mk-> mk.getKey().getId().equals(roomId)).toList();
     }
 
 //    TOTAL REVENUE BY ROOM TYPE
 
-    public List<Map.Entry<RoomType, DoubleSummaryStatistics>> getRoomWithTotalRevenue() {
+    public List<Map.Entry<RoomType, DoubleSummaryStatistics>> getRoomTypeWithTotalRevenue() {
         return allBookings.stream()
                 .collect(Collectors.groupingBy(b->b.getRoom().getRoomType()
                         ,Collectors.summarizingDouble(Booking::getPrice)))
@@ -180,7 +182,7 @@ public class BookingRepo implements IService<Booking> {
 
 //    DISPLAY TYPE ROOM HAS MAX TOTAL REVENUE BY YEAR
 
-    public Optional<Map.Entry<String, DoubleSummaryStatistics>> getRoomHasLargestRevenue(int year) {
+    public Optional<Map.Entry<String, DoubleSummaryStatistics>> getRoomTypeHasLargestRevenue(int year) {
                 return allBookings.stream()
                 .filter(booking -> booking.getCheck_in_datetime().getYear() == year)
                 .collect(Collectors.groupingBy(b->b.getRoom().getRoomType().getType()

@@ -91,11 +91,11 @@ public class Main {
                         break;
                     case "3":
                         System.out.println("====Total Revenue by RoomType");
-                        System.out.println(bookingRepo.getRoomWithTotalRevenue());
+                        System.out.println(bookingRepo.getRoomTypeWithTotalRevenue());
                         break;
                     case "4":
                         System.out.println("====Max total revenue by RoomType");
-                        System.out.println(bookingRepo.getRoomHasLargestRevenue(2023));
+                        System.out.println(bookingRepo.getRoomTypeHasLargestRevenue(2023));
                         break;
                     case "5":
                         System.out.println("Goodbye!");
