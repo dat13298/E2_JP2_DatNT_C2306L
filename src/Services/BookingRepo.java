@@ -145,10 +145,7 @@ public class BookingRepo implements IService<Booking> {
                 .filter(bm->bm.getCheck_out_datetime().isAfter(LocalDateTime.now()))
                 .collect(Collectors.groupingBy(Booking::getRoom));
         return roomResults.stream()
-                .filter(r-> {
-                    List<Booking> bookings = bookingByRoomId.get(r);
-                    return bookings == null || bookings.isEmpty();
-                }).collect(Collectors.toList());
+                .filter(bookingByRoomId::containsKey).collect(Collectors.toList());
     }
 
 //    FIND BOOKING BY...
