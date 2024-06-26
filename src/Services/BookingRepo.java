@@ -185,22 +185,25 @@ public class BookingRepo implements IService<Booking> {
 
 //    TOTAL REVENUE BY ROOM TYPE
 
-    public List<Map.Entry<RoomType, DoubleSummaryStatistics>> getRoomTypeWithTotalRevenue() {
+    public List<Map.Entry<String, Double>> getRoomTypeWithTotalRevenue() {
         return allBookings.stream()
-                .collect(Collectors.groupingBy(b->b.getRoom().getRoomType()
+                .collect(Collectors.groupingBy(b->b.getRoom().getRoomType().getType()
                         ,Collectors.summarizingDouble(Booking::getPrice)))
-                .entrySet().stream().toList();
-    }
+                        .entrySet().stream()
+                        .map(e->Map.entry(e.getKey(), e.getValue().getSum()))
+                        .collect(Collectors.toList());
+            }
 
 //    DISPLAY TYPE ROOM HAS MAX TOTAL REVENUE BY YEAR
 
-    public Optional<Map.Entry<String, DoubleSummaryStatistics>> getRoomTypeHasLargestRevenue(int year) {
+    public Optional<Map.Entry<String, Double>> getRoomTypeHasLargestRevenue(int year) {
                 return allBookings.stream()
                 .filter(booking -> booking.getCheck_in_datetime().getYear() == year)
                 .collect(Collectors.groupingBy(b->b.getRoom().getRoomType().getType()
                         ,Collectors.summarizingDouble(Booking::getPrice)))
-                .entrySet().stream()
-                .collect(Collectors.maxBy(Comparator.comparingDouble(e->e.getValue().getSum())));
+                        .entrySet().stream()
+                        .map(e->Map.entry(e.getKey(), e.getValue().getSum()))
+                        .collect(Collectors.maxBy(Comparator.comparingDouble(Map.Entry::getValue)));
     }
 
 //    CHECK EXIST WHEN INPUT

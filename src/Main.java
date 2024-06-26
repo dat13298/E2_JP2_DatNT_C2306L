@@ -39,7 +39,7 @@ public class Main {
         bookings.add(new Booking(2, rooms.get(0), customers.get(1), LocalDateTime.of(2023, 6, 9, 19, 30, 25), LocalDateTime.of(2023, 6, 10, 11, 25, 15)));
         bookings.add(new Booking(3, rooms.get(1), customers.get(1), LocalDateTime.of(2023, 3, 11, 10, 10, 5), LocalDateTime.of(2023, 3, 13, 11, 5, 10)));
         bookings.add(new Booking(4, rooms.get(3), customers.get(2), LocalDateTime.of(2025, 11, 11, 11, 11, 15), LocalDateTime.of(2025, 11, 13, 11, 15, 15)));
-        bookings.add(new Booking(5, rooms.get(3), customers.get(0), LocalDateTime.of(2023, 10, 25, 9, 20, 25), LocalDateTime.of(2023, 10, 26, 12, 25, 30)));
+        bookings.add(new Booking(5, rooms.get(4), customers.get(0), LocalDateTime.of(2023, 10, 25, 9, 20, 25), LocalDateTime.of(2023, 10, 26, 12, 25, 30)));
         bookings.add(new Booking(6, rooms.get(2), customers.get(0), LocalDateTime.of(2023, 8, 18, 12, 25, 35), LocalDateTime.of(2023, 8, 19, 11, 35, 20)));
 
         RoomRepo roomRepo = new RoomRepo();
@@ -75,6 +75,7 @@ public class Main {
                         System.out.println("====Find Booking");
                         System.out.print("Enter customer name | phone number | room id: ");
                         stringToFind = br.readLine();
+
                         if(!bookingRepo.findByCustomerName(stringToFind).isEmpty()) {
                             System.out.println(bookingRepo.findByCustomerName(stringToFind));
                             break;
