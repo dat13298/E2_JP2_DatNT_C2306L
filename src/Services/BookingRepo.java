@@ -157,7 +157,7 @@ public class BookingRepo implements IService<Booking> {
                 .entrySet().stream()
                 .filter(km-> {
                     for (String keyword : keywords) {
-                        if(km.getKey().getCus_name().contains(customerName)) return true;
+                        if(km.getKey().getCus_name().contains(keyword)) return true;
                     }
                     return false;
 
@@ -169,7 +169,7 @@ public class BookingRepo implements IService<Booking> {
                 .collect(Collectors.groupingBy(Booking::getCustomer))
                 .entrySet().stream().filter(mk-> {
                     for (String keyword : keywords) {
-                        if (mk.getKey().getCus_phone().contains(phone)) return true;
+                        if (mk.getKey().getCus_phone().contains(keyword)) return true;
                     }
                     return false;
                 }).toList();
