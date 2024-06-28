@@ -75,23 +75,7 @@ public class Main {
                         System.out.println("====Find Booking");
                         System.out.print("Enter customer name | phone number | room id: ");
                         stringToFind = br.readLine();
-
-                        List<Map.Entry<Customer, List<Booking>>> resultByName = bookingRepo.findByCustomerName(stringToFind);
-                        if(!resultByName.isEmpty()) {
-                            System.out.println(resultByName);
-                            break;
-                        }
-                        List<Map.Entry<Customer, List<Booking>>> resultByPhone = bookingRepo.findByCustomerPhone(stringToFind);
-                        if (!resultByPhone.isEmpty()) {
-                            System.out.println(resultByPhone);
-                            break;
-                        }
-                        List<Map.Entry<Room, List<Booking>>> resultByRoom = bookingRepo.findByRoomId(stringToFind);
-                        if (!resultByRoom.isEmpty()) {
-                            System.out.println(resultByRoom);
-                            break;
-                        }
-                        System.out.println("No reservations found");
+                        System.out.println(bookingRepo.findBookings(stringToFind));
                         break;
                     case "3":
                         System.out.println("====Total Revenue by RoomType");
